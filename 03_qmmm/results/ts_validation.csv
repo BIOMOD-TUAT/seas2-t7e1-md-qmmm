@@ -1,0 +1,20 @@
+# TS：TSpcn20b の基準点（rqB_TSC_ctr2）。熱の補正は部分ヘシアン（20 原子、調和近似）、310.15 K
+# 最大の力 1.141E-3 Ha/Bohr は、設定した基準 1.0E-3 をわずかに超える
+項目,値,出典
+ΔE‡,57.55 kcal/mol,ts_record_v1/rqB_TS_record.md
+ΔG‡（harmonic）,52.75 kcal/mol,ts_record_v1/rqB_TS_record.md
+dZPE / dHvib / −TdS / dGvib,-5.00 / -5.06 / +0.25 / -4.80 kcal/mol,ts_record_v1/rqB_TS_record.md
+ΔG‡（50 cm⁻¹ / 100 cm⁻¹）,52.75 / 52.74 kcal/mol,ts_record_v1/rqB_TS_record.md
+虚数の振動,-65.5 cm⁻¹（1 本）、cos(RC) -0.20,ts_record_v1/rqB_TS_record.md
+虚数の振動の成分（上位 8）,"69877 TIP3 H1 0.368, 14873 TIP3 H2 0.182, 14872 TIP3 H1 0.100, 4536 CYT P 0.086, 27260 TIP3 H2 0.068, 69878 TIP3 H2 0.052, 27259 TIP3 H1 0.035, 27258 TIP3 OH2 0.029",ts_record_v1/rqB_TS_record.md
+変位方向の微分,P–O3′ +0.333、P–Ow -0.152、H69877（O69876→O14871）+1.299、H14873（O14871→O3′）+0.940,ts_record_v1/rqB_TS_record.md
+低い実の振動,"128.5, 196.7, 211.0, 223.3, 230.9 cm⁻¹",ts_record_v1/rqB_TS_record.md
+最大の力,1.141e-03 Ha/Bohr（原子 14871）。設定した基準（1.0E-3）をわずかに超える,ts_record_v1/rqB_TS_record.md
+asym/hmax,0.0011,ts_record_v1/rqB_TS_record.md
+切断側の浅い極小（sm080lg_free2）との差,-0.05 kcal/mol（極小が低い。丸める前の ΔE から計算：TS 57.549、極小 57.495）,rqB_TSC_sp、rqB_sm080lg_free2
+切断側の極小 1：sm080lg_free2,ΔE 57.49 kcal/mol、P–O3′ 2.50 Å（通常の収束）,rqB_sm080lg_free2
+切断側の極小 2：kp（TS から切断側へずらして最適化）,ΔE 57.39 kcal/mol、P–O3′ 2.329 Å（L-BFGS 独自の基準で停止）,rqB_TSC_kp
+切断側の領域（注記）,切断側は、P–O3′ 2.3〜2.5 Å にわたって、エネルギーがほぼ一定の平らな領域,上の 2 つ
+つながりの確認,虚数の振動の方向に ±0.10 Å ずらして最適化した。一方（km）は反応物側へ戻り（P–O3′ 1.635、3 つのプロトンは反応物側の原子に戻った）、もう一方（kp）は切断側の浅い極小にとどまった（P–O3′ 2.329）,rqB_TSC_kp、rqB_TSC_km
+つながりの確認 rqB_TSC_kp（TS から切断側へ）,L-BFGS 独自の基準で停止（run CONVERGED の表示あり）。最大の力 1.10E-3 Ha/Bohr（MAX_FORCE 1.0E-3 をわずかに超える）。18 ステップ、ΔE 57.39 kcal/mol、P–O3′ 2.329 Å、P–Ow 1.707 Å、最後の最大の力 0.0011022375 Ha/Bohr,rqB_qmmm/rqB_TSC_kp
+つながりの確認 rqB_TSC_km（TS から反応物側へ）,60 ステップで打ち切り（未収束）。反応物側へ戻った。60 ステップ、ΔE 4.50 kcal/mol、P–O3′ 1.635 Å、P–Ow 3.158 Å、最後の最大の力 0.0021203172 Ha/Bohr,rqB_qmmm/rqB_TSC_km

@@ -1,0 +1,16 @@
+# ChimeraX command file. run from a folder that has struct/ (pdb) and cube/ next to it
+close
+set bgColor black
+lighting simple
+lighting depthCue false
+graphics silhouettes false
+open struct/R_qm.pdb
+hide #1 target c
+show #1 target ab
+style #1 ball
+color #1 byhetero
+color #1 & P orange
+style #1@@bfactor>2.5 sphere
+size #1@@bfactor>2.5 atomRadius 0.8
+color #1@@bfactor>2.5 purple
+view

@@ -1,0 +1,82 @@
+# ChimeraX command file. run from a folder that has struct/ (pdb) and cube/ next to it
+close
+set bgColor black
+lighting simple
+lighting depthCue false
+graphics silhouettes false
+open struct/R_env.pdb
+nucleotides #1 atoms
+hide #1 target abc
+show (#1@@bfactor>1.5 :< 8) & #1@@bfactor<0.5 & ~H target ab
+style #1@@bfactor<0.5 stick
+size #1@@bfactor<0.5 stickRadius 0.07
+color #1@@bfactor<0.5 rgb(60,60,60)
+hide #1@@bfactor<0.5 & :TIP3,TIP,HOH,SOD,CLA,POT target ab
+show #1@@bfactor>0.5 target ab
+style #1@@bfactor>0.5 ball
+size #1@@bfactor>0.5 stickRadius 0.14
+color #1@@bfactor>0.5 byhetero
+color #1@@bfactor>0.5 & P orange
+style #1@@bfactor>2.5 sphere
+size #1@@bfactor>2.5 atomRadius 0.8
+color #1@@bfactor>2.5 purple
+select #1@@occupancy>0.5 & #1@@occupancy<1.5
+select add #1@@occupancy>1.5 & #1@@occupancy<2.5
+color sel gold target b
+size sel stickRadius 0.26
+select clear
+color #1@@occupancy>2.5 & #1@@occupancy<3.5 lime
+color #1@@occupancy>3.5 & #1@@occupancy<4.5 magenta
+color #1@@occupancy>6.5 & #1@@occupancy<7.5 magenta
+color #1@@occupancy>8.5 & #1@@occupancy<9.5 magenta
+select #1@@occupancy>0.5 & #1@@occupancy<1.5
+select add #1@@occupancy>1.5 & #1@@occupancy<2.5
+distance sel
+select clear
+select #1@@occupancy>0.5 & #1@@occupancy<1.5
+select add #1@@occupancy>2.5 & #1@@occupancy<3.5
+distance sel
+select clear
+select #1@@occupancy>3.5 & #1@@occupancy<4.5
+select add #1@@occupancy>4.5 & #1@@occupancy<5.5
+distance sel
+select clear
+select #1@@occupancy>3.5 & #1@@occupancy<4.5
+select add #1@@occupancy>2.5 & #1@@occupancy<3.5
+distance sel
+select clear
+select #1@@occupancy>6.5 & #1@@occupancy<7.5
+select add #1@@occupancy>1.5 & #1@@occupancy<2.5
+distance sel
+select clear
+select #1@@occupancy>6.5 & #1@@occupancy<7.5
+select add #1@@occupancy>5.5 & #1@@occupancy<6.5
+distance sel
+select clear
+select #1@@occupancy>8.5 & #1@@occupancy<9.5
+select add #1@@occupancy>5.5 & #1@@occupancy<6.5
+distance sel
+select clear
+select #1@@occupancy>8.5 & #1@@occupancy<9.5
+select add #1@@occupancy>7.5 & #1@@occupancy<8.5
+distance sel
+select clear
+distance style color white
+distance style dashes 7
+distance style radius 0.05
+hide #2.1 models
+color #2 white
+open struct/complex_R.pdb
+hide #3 target ab
+cartoon #3
+cartoon style #3 width 1.4 thickness 0.3
+nucleotides #3 fill
+color #3 & protein rgb(50,78,110)
+color #3 & nucleic rgb(90,72,28)
+show #3 & nucleic & ~H target ab
+style #3 & nucleic & ~H stick
+size #3 & nucleic & ~H stickRadius 0.2
+alias closeup hide (#1@@bfactor>0.5 :< 5) & #3 & nucleic target abc; view #1@@bfactor>1.5
+alias wide show #3 & nucleic target c; show #3 & nucleic & ~H target ab; view
+hide (#1@@bfactor>0.5 :< 5) & #3 & nucleic target abc
+view #1@@bfactor>1.5

@@ -1,0 +1,42 @@
+# ChimeraX command file. run from a folder that has struct/ (pdb) and cube/ next to it
+close
+set bgColor black
+lighting simple
+lighting depthCue false
+graphics silhouettes false
+open struct/R_env.pdb
+nucleotides #1 atoms
+hide #1 target abc
+show (#1@@bfactor>1.5 :< 8) & #1@@bfactor<0.5 & ~H target ab
+style #1@@bfactor<0.5 stick
+size #1@@bfactor<0.5 stickRadius 0.07
+color #1@@bfactor<0.5 rgb(60,60,60)
+hide #1@@bfactor<0.5 & :TIP3,TIP,HOH,SOD,CLA,POT target ab
+show #1@@bfactor>0.5 target ab
+style #1@@bfactor>0.5 ball
+size #1@@bfactor>0.5 stickRadius 0.14
+color #1@@bfactor>0.5 byhetero
+color #1@@bfactor>0.5 & P orange
+style #1@@bfactor>2.5 sphere
+size #1@@bfactor>2.5 atomRadius 0.8
+color #1@@bfactor>2.5 purple
+select #1@@occupancy>0.5 & #1@@occupancy<1.5
+select add #1@@occupancy>1.5 & #1@@occupancy<2.5
+color sel gold target b
+size sel stickRadius 0.26
+select clear
+color #1@@occupancy>2.5 & #1@@occupancy<3.5 lime
+open struct/complex_R.pdb
+hide #2 target ab
+cartoon #2
+cartoon style #2 width 1.4 thickness 0.3
+nucleotides #2 fill
+color #2 & protein rgb(50,78,110)
+color #2 & nucleic rgb(90,72,28)
+show #2 & nucleic & ~H target ab
+style #2 & nucleic & ~H stick
+size #2 & nucleic & ~H stickRadius 0.2
+alias closeup hide (#1@@bfactor>0.5 :< 5) & #2 & nucleic target abc; view #1@@bfactor>1.5
+alias wide show #2 & nucleic target c; show #2 & nucleic & ~H target ab; view
+hide (#1@@bfactor>0.5 :< 5) & #2 & nucleic target abc
+view #1@@bfactor>1.5
