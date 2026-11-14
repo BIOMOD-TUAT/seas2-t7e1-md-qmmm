@@ -10,23 +10,25 @@ from pptx.enum.chart import XL_CHART_TYPE, XL_LEGEND_POSITION, XL_MARKER_STYLE
 import openpyxl
 from openpyxl.styles import Font, Alignment
 B="./"
-RES=["Lys67","Gly68","Leu69","Glu71","Lys103"]; CO=["1A","2A","3A","4A","5A"]
-ANY=np.array([[0.2,0.6,10.4,20.8,3.8],[95.4,46.7,99.8,92.6,70.9],[95.6,50.3,100.0,99.8,85.8],[0.0,73.0,49.9,91.0,54.5],[1.2,0.0,99.0,88.6,32.1]])
+RES=["Ser17*","Gly18*","Gly68","Leu69","Glu71","Ser95","Lys103"]; CH=["A","A","B","B","B","B","B"]; CO=["1A","2A","3A","4A","5A"]
+ANY=np.array([[4.79,19.36,14.57,69.66,91.62],[11.58,5.59,0.20,60.28,92.61],[95.41,46.71,99.80,92.61,70.86],[95.61,50.30,100.0,99.80,85.83],[0.0,73.05,50.30,91.02,54.49],[77.64,0.0,0.0,2.00,6.79],[1.20,0.0,99.20,88.62,32.34]])
+EXT=[("A Glu20",[0.0,38.92,0.0,28.94,16.17]),("B Ser96",[21.36,0,0,0,0]),("B Lys67",[0.20,0.60,10.38,20.76,3.79])]
 PAL=["#eb6834","#1baf7a","#eda100","#e87ba4","#008300"]; INK2="#52514e"; GRID="#d9d8d3"
 JPF="/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc"; fm.fontManager.addfont(JPF); JP=fm.FontProperties(fname=JPF).get_name()
 plt.rcParams["font.family"]=["Liberation Sans",JP]; im=Image.open("img/contacts_500ns.png").convert("RGB")
+LB={"ja":["%s\n%s 鎖"%(r,c) for r,c in zip(RES,CH)],"en":["%s\nchain %s"%(r,c) for r,c in zip(RES,CH)]}
 TX={"ja":("アミノ酸残基","接触していた時間の割合 (%)"),"en":("Amino acid residue","Contact occupancy (%)")}
 for lang in ("ja","en"):
-    fig=plt.figure(figsize=(13,4.4),dpi=300); ax=fig.add_axes([0.06,0.17,0.36,0.63]); x=np.arange(5)
+    fig=plt.figure(figsize=(13,4.4),dpi=300); ax=fig.add_axes([0.055,0.2,0.40,0.6]); x=np.arange(7)
     for j,(c,cl) in enumerate(zip(CO,PAL)): ax.plot(x,ANY[:,j],color=cl,lw=2,marker="o",ms=7,label=c)
-    ax.set_xticks(x); ax.set_xticklabels(RES); ax.set_xlim(-0.25,4.25); ax.set_ylim(-3,105); ax.set_yticks([0,25,50,75,100]); ax.set_xlabel(TX[lang][0],fontsize=12); ax.set_ylabel(TX[lang][1],fontsize=12)
+    ax.set_xticks(x); ax.set_xticklabels(LB[lang]); ax.set_xlim(-0.3,6.3); ax.set_ylim(-3,105); ax.set_yticks([0,25,50,75,100]); ax.set_xlabel(TX[lang][0],fontsize=12); ax.set_ylabel(TX[lang][1],fontsize=12)
     ax.spines[["top","right"]].set_visible(False); ax.yaxis.grid(True,color=GRID,lw=0.8); ax.set_axisbelow(True); ax.tick_params(labelsize=11,colors=INK2)
     ax.legend(frameon=False,fontsize=11,ncol=5,loc="upper center",bbox_to_anchor=(0.5,1.2),handlelength=1.3,columnspacing=1.2,handletextpad=0.4)
-    w=0.49; h=w*13/4.4*im.size[1]/im.size[0]; ab=fig.add_axes([0.505,0.5-h/2,w,h]); ab.imshow(im); ab.axis("off")
-    fig.text(0.01,0.9,"a",fontsize=20,fontweight="bold"); fig.text(0.475,0.9,"b",fontsize=20,fontweight="bold")
+    w=0.46; h=w*13/4.4*im.size[1]/im.size[0]; ab=fig.add_axes([0.53,0.5-h/2,w,h]); ab.imshow(im); ab.axis("off")
+    fig.text(0.01,0.9,"a",fontsize=20,fontweight="bold"); fig.text(0.5,0.9,"b",fontsize=20,fontweight="bold")
     fig.savefig(f"fig04_bulge_contacts_{lang}.png",facecolor="white"); plt.close(fig)
 prs=Presentation(); prs.slide_width=Inches(13.333); prs.slide_height=Inches(7.5); s=prs.slides.add_slide(prs.slide_layouts[6])
-cd=CategoryChartData(); cd.categories=RES
+cd=CategoryChartData(); cd.categories=["%s (%s)"%(r,c) for r,c in zip(RES,CH)]
 for j,c in enumerate(CO): cd.add_series(c,[float(v) for v in ANY[:,j]])
 ch=s.shapes.add_chart(XL_CHART_TYPE.LINE_MARKERS,Inches(0.4),Inches(1.7),Inches(5.9),Inches(4.2),cd).chart
 ch.has_legend=True; ch.legend.position=XL_LEGEND_POSITION.TOP; ch.legend.include_in_layout=False; ch.legend.font.size=Pt(10)
@@ -44,14 +46,19 @@ for X,l in ((0.35,"a"),(6.65,"b")):
 prs.save("fig04_bulge_contacts_editable.pptx")
 wb=openpyxl.Workbook(); w=wb.active; w.title="README"
 for r in [("項目","内容"),("図","挿入した A と酵素の接触（a：アミノ酸ごとの接触の割合を、バルジの長さ別に示した。b：3A での 500 ns の時間変化）"),
-("a","横軸は T7E1 の B 鎖の 5 つのアミノ酸、縦軸は挿入した A のどれかと接触していたフレームの割合（%、50 ns）。線はバルジの長さ（1A〜5A）。接触の定義：水素以外の原子間の最短距離が 0.45 nm 未満"),
+("a","横軸は T7E1 のアミノ酸、縦軸は挿入した A のどれかと接触していたフレームの割合（%）。線はバルジの長さ（1A〜5A）。接触の定義：水素以外の原子間の最短距離が 0.45 nm 以内"),
+("a の残基の選び方","両鎖の全残基（17–145、計 258 残基）を調べ、いずれかの条件で接触の割合が 50 % 以上だった 7 残基をすべて示した。この基準は結果を見る前に決めた"),
+("解析の範囲","各条件 501 フレーム。3A は 400〜50,400 ps、他は 0〜50,000 ps"),
+("* の残基","A 鎖の Ser17 と Gly18 は、モデルの N 末端とその隣である（残基 1–16 は結晶構造になく、モデルに含まれない）。この接触は、モデルを途中で切ったことによる人工的なものである可能性がある"),
 ("0A がない理由","0A には挿入した A がなく、「挿入した A との接触」が定義できないため"),
 ("a の線について","横軸のアミノ酸は連続した量ではない。線は同じ条件の点を見分けやすくするためにつないだもので、中間の値を意味しない"),
-("a の数値の出どころ","元の MD 解析の図版に印字されていた数値（小数第 1 位まで）を、目で読み取って写した。元の表（CSV）とは照合していない"),
-("b","3A の 500 ns の MD を 50 ns ごとに区切った、同じ接触の割合。B68 = Gly68、B69 = Leu69、B71 = Glu71、B103 = Lys103。元の MD 解析の図版から切り出した画像")]: w.append(r)
+("a の数値の出どころ","全残基の接触解析（contact_scan_20261114）の報告値。全残基の表（contact_all_residues.csv）は計算機上にあり、このファイルには報告された上位の残基のみを収めた"),
+("検算","3A・B 鎖の 5 残基について、以前の 50 ns の値と照合した（Lys67 10.38/10.38、Gly68 99.80/99.8、Leu69 100.00/100.0、Glu71 50.30/49.9、Lys103 99.20/99.0）"),
+("b","3A の 500 ns の MD を 50 ns ごとに区切った接触の割合（以前の解析）。B68 = Gly68、B69 = Leu69、B71 = Glu71、B103 = Lys103。a とは別の解析であり、割合を直接は比べられない")]: w.append(r)
 w.column_dimensions["A"].width=20; w.column_dimensions["B"].width=115
-ws=wb.create_sheet("a_contacts"); ws.append(["残基（B 鎖）"]+CO)
-for r,v in zip(RES,ANY): ws.append([r]+[float(x) for x in v])
+ws=wb.create_sheet("a_contacts"); ws.append(["鎖","残基"]+CO+["図に表示"])
+for r,c,v in zip(RES,CH,ANY): ws.append([c,r.strip("*")]+[float(x) for x in v]+["はい"])
+for n,v in EXT: ws.append(n.split()+[float(x) for x in v]+["いいえ（50 % 未満）"])
 for q in wb:
     for row in q.iter_rows():
         for c in row: c.font=Font(name="Arial",size=10); c.alignment=Alignment(wrap_text=True,vertical="top")

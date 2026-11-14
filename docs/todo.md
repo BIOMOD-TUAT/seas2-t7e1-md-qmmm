@@ -12,4 +12,5 @@ Files that exist only on the computing cluster and still have to be exported
 - [ ] Large data (trajectories, restart and cube files): deposit elsewhere (e.g. Zenodo or a shared drive) and link here
 - [ ] Choose a license (for example MIT for code and CC BY 4.0 for data and figures)
 - [ ] Add the Google Drive link for figures and source data to the top-level README
-- [ ] Check the Fig. 4a values (read from a printed heat map) against the original contact table
+- [ ] `02_md/contact_scan/`: full tables and scripts of the all-residue contact scan (see the README there)
+- [ ] `03_qmmm/`: restraint list (atom pairs, target distances, force constants) and length of the MD used to rebuild the metal site
